@@ -54,13 +54,36 @@ include "koneksi.php";
         color: #ffffff !important;
       }
 
-      .dark-theme footer a i {
+      .dark-theme footer i {
         color: #ffffff !important;
       }
 
+      .dark-theme #gallery,
       .dark-theme #hero {
         background-color: #1b1b1b !important;
         color: #ffffff !important;
+      }
+
+      .dark-theme #schedule {
+        background-color: #121212 !important;
+        color: #ffffff !important;
+      }
+
+      .dark-theme #schedule .card {
+        background-color: #1f1f1f !important;
+        border: 1px solid #333 !important;
+      }
+
+      .dark-theme #schedule .text-muted {
+        color: #bbb !important;
+      }
+
+      .dark-theme #schedule .border-bottom {
+        border-bottom: 1px solid #333 !important;
+      }
+
+      .dark-theme .shadow {
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.5) !important;
       }
 
       * {
