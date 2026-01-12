@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                           FROM user 
                           WHERE username=? AND password=?");
 
-  $stmt->bind_param("ss", $username, $password);//username string dan password string
+  $stmt->bind_param("ss", $username, $password);
   
   $stmt->execute();
   
@@ -54,22 +54,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php
 $notification = "";
 
-// set variable username dan password dummy
 $username_dummy = "admin";
 $password_dummy = "123456";
 
-//check jika sudah ada user yang login arahkan ke halaman admin
 if (isset($_SESSION['username'])) { 
 	header("location:admin.php"); 
 }
 
-// check apakah ada request dengan method POST yang dilakukan
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Ambil data dari form input
     $input_user = htmlspecialchars($_POST['user']);
     $input_pass = htmlspecialchars($_POST['pass']); 
 
-    // check apakah username dan password yang di POST sama dengan data dummy
     if($input_user == $username_dummy && $input_pass == $password_dummy){
         $notification_class = 'alert-success';
         $status_text = 'Username dan Password Benar.';
