@@ -21,14 +21,14 @@ include "koneksi.php";
     <style> 
       .banner {
        width: 100%;
-       height: 220px; /* Lebih kecil, tetap proporsional */
+       height: 220px; 
        object-fit: cover;
        border-radius: 10px;
       }
       .article-img {
-       width: 100%;          /* memenuhi lebar card */
-       height: 180px;        /* ukuran seragam & proporsional */
-       object-fit: cover;    /* agar gambar tidak gepeng */
+       width: 100%;          
+       height: 180px;        
+       object-fit: cover;    
        border-radius: 6px;
        display: block;
        margin-left: auto;
@@ -212,61 +212,48 @@ include "koneksi.php";
   </div>
 </section>
 <!-- article end -->
-    <!-- gallery begin -->
-    <section id="gallery" class="text-center p-5 bg-dark-subtle">
-      <div class="container">
-        <h1 class="fw-bold display-4 pb-3">Gallery</h1>
-        <div id="carouselExample" class="carousel slide">
-          <div class="carousel-inner">
+<!-- gallery begin -->
+    <section id="gallery" class="text-center p-5 bg-danger-subtle">
+  <div class="container">
+    <h1 class="fw-bold display-4 pb-3">Gallery</h1>
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <?php
+        $sql = "SELECT * FROM gallery ORDER BY tanggal DESC";
+        $hasil = $conn->query($sql);
+        
+        $active = "active"; 
+        if ($hasil->num_rows > 0) {
+            while($row = $hasil->fetch_assoc()) {
+                ?>
+                <div class="carousel-item <?= $active ?>">
+                  <img src="img/<?= $row['gambar'] ?>" class="d-block w-100 banner" alt="<?= $row['judul'] ?>">
+                  <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
+                    <h5><?= $row['judul'] ?></h5>
+                  </div>
+                </div>
+                <?php
+                $active = ""; 
+            }
+        } else {
+            echo '
             <div class="carousel-item active">
-              <img src="img/kelas.jpg" class="d-block w-100" alt="kelas" />
-            </div>
-            <div class="carousel-item">
-              <img src="img/perpustakaan.jpg" class="d-block w-100" alt="perpustakaan" />
-            </div>
-            <div class="carousel-item">
-              <img
-                src="img/lab komputer.jpg"
-                class="d-block w-100"
-                alt="lab komputer"
-              />
-            </div>
-            <div class="carousel-item">
-              <img
-                src="img/taman.jpg"
-                class="d-block w-100"
-                alt="taman"
-              />
-            </div>
-            <div class="carousel-item">
-              <img
-                src="img/auditorium.jpg"
-                class="d-block w-100"
-                alt="auditorium"
-              />
-            </div>
-          </div>
-          <button
-            class="carousel-control-prev"
-            type="button"
-            data-bs-target="#carouselExample"
-            data-bs-slide="prev"
-          >
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button
-            class="carousel-control-next"
-            type="button"
-            data-bs-target="#carouselExample"
-            data-bs-slide="next"
-          >
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
+              <img src="img/default.jpg" class="d-block w-100 banner" alt="No Image">
+            </div>';
+        }
+        ?>
       </div>
-    </section>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-view="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-next="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+</section>
     <!-- gallery end -->
     <!-- footer begin -->
     <section id="schedule" class="container-fluid bg-light py-5">

@@ -1,28 +1,21 @@
 <?php
-//memulai session atau melanjutkan session yang sudah ada
 session_start();
 
-//menyertakan code dari file koneksi
 include "koneksi.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = $_POST['user'];
   
-  //menggunakan fungsi enkripsi md5 supaya sama dengan password  yang tersimpan di database
   $password = md5($_POST['pass']);
 
-	//prepared statement
   $stmt = $conn->prepare("SELECT username 
                           FROM user 
                           WHERE username=? AND password=?");
 
-	//parameter binding 
   $stmt->bind_param("ss", $username, $password);//username string dan password string
   
-  //database executes the statement
   $stmt->execute();
   
-  //menampung hasil eksekusi
   $hasil = $stmt->get_result();
   
   $row = $hasil->fetch_array(MYSQLI_ASSOC);

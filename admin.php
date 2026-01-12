@@ -75,6 +75,12 @@ if (!isset($_SESSION['username'])) {
                     <li><a class="dropdown-item" href="logout.php">Logout</a></li> 
                 </ul>
             </li> 
+            <li class="nav-item">
+                <a class="nav-link" href="admin.php?page=gallery">Gallery</a>
+            </li> 
+            <li class="nav-item">
+                <a class="nav-link" href="admin.php?page=user">User</a>
+            </li>
         </ul>
         </div>
     </div>
