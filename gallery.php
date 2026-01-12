@@ -1,41 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery</title>
-</head>
-<body>
-    <div class="container">
-    <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#modalTambah">
-        <i class="bi bi-plus-lg"></i> Tambah Gallery
-    </button>
-    <div class="row">
-        <div class="table-responsive" id="gallery_data"></div>
-    </div>
-</div>
-
-<script>
-$(document).ready(function(){
-    load_data();
-    $(document).on('click', '.halaman', function(e){
-        e.preventDefault();
-        load_data($(this).attr("id"));
-    });
-});
-
-function load_data(hlm){
-    $.ajax({
-        url : "gallery_data.php",
-        method : "POST",
-        data : { hlm: hlm },
-        success : function(data){
-            $('#gallery_data').html(data);
-        }
-    });
-} 
-</script>
-
 <?php
 include "koneksi.php";
 include "upload_foto.php";
@@ -94,35 +56,43 @@ if (isset($_POST['hapus'])) {
 ?>
 
 <div class="container">
-    <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#modalTambah">
-        <i class="bi bi-plus-lg"></i> Tambah Gallery
-    </button>
-    <div class="row">
-        <div class="table-responsive" id="gallery_data"></div>
-        <div class="modal fade" id="modalTambah" data-bs-backdrop="static" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5">Tambah Gallery</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <form method="post" action="" enctype="multipart/form-data">
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label class="form-label">Judul</label>
-                                <input type="text" class="form-control" name="judul" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Gambar</label>
-                                <input type="file" class="form-control" name="gambar">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <input type="submit" value="simpan" name="simpan" class="btn btn-primary">
-                        </div>
-                    </form>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">Manajemen Gallery</h4>
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalTambah">
+            <i class="bi bi-plus-lg"></i> Tambah Gallery
+        </button>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive" id="gallery_data">
                 </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalTambah" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalTambahLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-dark">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalTambahLabel">Tambah Gallery</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Judul</label>
+                            <input type="text" class="form-control" name="judul" placeholder="Masukkan judul gallery" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Gambar</label>
+                            <input type="file" class="form-control" name="gambar" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" value="simpan" name="simpan" class="btn btn-primary">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -131,11 +101,14 @@ if (isset($_POST['hapus'])) {
 <script>
 $(document).ready(function(){
     load_data();
+
     $(document).on('click', '.halaman', function(e){
         e.preventDefault();
-        load_data($(this).attr("id"));
+        var hlm = $(this).attr("id");
+        load_data(hlm);
     });
 });
+
 function load_data(hlm){
     $.ajax({
         url : "gallery_data.php",
@@ -147,5 +120,3 @@ function load_data(hlm){
     });
 } 
 </script>
-</body>
-</html>

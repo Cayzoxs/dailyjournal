@@ -41,10 +41,10 @@ $hasil = $conn->query($sql);
     </tbody>
 </table>
 <?php
-include "koneksi.php"; 
+include "koneksi.php";
 
 $hlm = (isset($_POST['hlm'])) ? $_POST['hlm'] : 1;
-$limit = 3;  
+$limit = 3; 
 $limit_start = ($hlm - 1) * $limit;
 $no = $limit_start + 1;
 
@@ -56,15 +56,13 @@ $hasil = $conn->query($sql);
     <thead class="table-dark">
         <tr>
             <th>No</th>
-            <th class="w-25">Judul</th>
+            <th class="w-25">Judul / Tanggal</th>
             <th class="w-50">Gambar</th>
             <th class="w-25">Aksi</th>
         </tr>
     </thead>
     <tbody>
-        <?php
-        while ($row = $hasil->fetch_assoc()) {
-        ?>
+        <?php while ($row = $hasil->fetch_assoc()) { ?>
             <tr>
                 <td><?= $no++ ?></td>
                 <td>
@@ -90,11 +88,11 @@ $hasil = $conn->query($sql);
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5">Edit Gallery</h1>
+                                    <h1 class="modal-title fs-5 text-dark">Edit Gallery</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <form method="post" action="" enctype="multipart/form-data">
-                                    <div class="modal-body">
+                                    <div class="modal-body text-dark">
                                         <input type="hidden" name="id" value="<?= $row["id"] ?>">
                                         <div class="mb-3">
                                             <label class="form-label">Judul</label>
@@ -124,18 +122,16 @@ $hasil = $conn->query($sql);
 
                     <div class="modal fade" id="modalHapus<?= $row["id"] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog">
-                            <div class="modal-content">
+                            <div class="modal-content text-dark">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5">Konfirmasi Hapus Gallery</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <form method="post" action="">
                                     <div class="modal-body">
-                                        <div class="mb-3">
-                                            <p>Yakin akan menghapus data gallery "<strong><?= $row["judul"] ?></strong>"?</p>
-                                            <input type="hidden" name="id" value="<?= $row["id"] ?>">
-                                            <input type="hidden" name="gambar" value="<?= $row["gambar"] ?>">
-                                        </div>
+                                        <p>Yakin akan menghapus data gallery "<strong><?= $row["judul"] ?></strong>"?</p>
+                                        <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                                        <input type="hidden" name="gambar" value="<?= $row["gambar"] ?>">
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -147,9 +143,7 @@ $hasil = $conn->query($sql);
                     </div>
                 </td>
             </tr>
-        <?php
-        }
-        ?>
+        <?php } ?>
     </tbody>
 </table>
 
@@ -159,37 +153,36 @@ $hasil_total = $conn->query($sql_total);
 $total_records = $hasil_total->num_rows;
 ?>
 
-<p>Total data gallery : <?php echo $total_records; ?></p>
-<nav class="mb-2">
-    <ul class="pagination justify-content-end">
-    <?php
-        $jumlah_page = ceil($total_records / $limit);
-        $jumlah_number = 1; 
-        $start_number = ($hlm > $jumlah_number)? $hlm - $jumlah_number : 1;
-        $end_number = ($hlm < ($jumlah_page - $jumlah_number))? $hlm + $jumlah_number : $jumlah_page;
+<div class="d-flex justify-content-between align-items-center mt-3">
+    <p>Total data gallery : <?php echo $total_records; ?></p>
+    <nav>
+        <ul class="pagination pagination-sm justify-content-end mb-0">
+            <?php
+            $jumlah_page = ceil($total_records / $limit);
+            
+            if($hlm == 1){
+                echo '<li class="page-item disabled"><a class="page-link" href="#">First</a></li>';
+                echo '<li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>';
+            } else {
+                echo '<li class="page-item halaman" id="1"><a class="page-link" href="#">First</a></li>';
+                echo '<li class="page-item halaman" id="'.($hlm - 1).'"><a class="page-link" href="#">&laquo;</a></li>';
+            }
 
-        if($hlm == 1){
-            echo '<li class="page-item disabled"><a class="page-link" href="#">First</a></li>';
-            echo '<li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>';
-        } else {
-            echo '<li class="page-item halaman" id="1"><a class="page-link" href="#">First</a></li>';
-            echo '<li class="page-item halaman" id="'.($hlm - 1).'"><a class="page-link" href="#">&laquo;</a></li>';
-        }
+            for($i = 1; $i <= $jumlah_page; $i++){
+                $link_active = ($hlm == $i)? ' active' : '';
+                echo '<li class="page-item halaman '.$link_active.'" id="'.$i.'"><a class="page-link" href="#">'.$i.'</a></li>';
+            }
 
-        for($i = $start_number; $i <= $end_number; $i++){
-            $link_active = ($hlm == $i)? ' active' : '';
-            echo '<li class="page-item halaman '.$link_active.'" id="'.$i.'"><a class="page-link" href="#">'.$i.'</a></li>';
-        }
-
-        if($hlm == $jumlah_page || $total_records == 0){
-            echo '<li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>';
-            echo '<li class="page-item disabled"><a class="page-link" href="#">Last</a></li>';
-        } else {
-            echo '<li class="page-item halaman" id="'.($hlm + 1).'"><a class="page-link" href="#">&raquo;</a></li>';
-            echo '<li class="page-item halaman" id="'.$jumlah_page.'"><a class="page-link" href="#">Last</a></li>';
-        }
-    ?>
-    </ul>
-</nav>
+            if($hlm == $jumlah_page || $total_records == 0){
+                echo '<li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>';
+                echo '<li class="page-item disabled"><a class="page-link" href="#">Last</a></li>';
+            } else {
+                echo '<li class="page-item halaman" id="'.($hlm + 1).'"><a class="page-link" href="#">&raquo;</a></li>';
+                echo '<li class="page-item halaman" id="'.$jumlah_page.'"><a class="page-link" href="#">Last</a></li>';
+            }
+            ?>
+        </ul>
+    </nav>
+</div>
 </body>
 </html>
